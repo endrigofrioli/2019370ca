@@ -8,7 +8,7 @@ public class Exceptions {
 	}
 
 	public static void throwRunTimeException() {
-		throw new RuntimeException("This is an unchecked exceptio, you can ignore it if required");
+		throw new RuntimeException("This is an unchecked exception, you can ignore it if required");
 	}
 
 	public static void main(String[] args) {
