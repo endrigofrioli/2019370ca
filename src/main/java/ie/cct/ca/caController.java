@@ -16,31 +16,41 @@ public class caController {
 
 	public caController() {
 		animals = new ArrayList<Animals>();
+		
+		animals.add(new Animals("cow", 300f, 0f));
+		animals.add(new Animals("cow", 70f, 0f));
+		animals.add(new Animals("pig", 100f, 0f));
+		animals.add(new Animals("pig", 30f, 0f));
+		animals.add(new Animals("chicken", 6.0f, 0f));
+		animals.add(new Animals("chicken", 2.0f, 0f));
+	
+		
+				
 	}
 
 	// GET http://localhost:8080/welcome-message
 	@GetMapping("welcome-message")
 	public String welcome() {
-		
-		return new String ("Welcome to my Farm!");
-	}
-	
 
-	// #1   Endpoint
+		return new String("Welcome to my Farm!");
+	}
+
+	// #1 Endpoint
 	// - Add a new animal.
 	// POST http://localhost:8080/add-animal
 	@PostMapping("add-animal")
 	public SuccessResponse addAnimal(@RequestBody Animals animal) {
 		animals.add(animal);
-		return new SuccessResponse(" ANIMAL [" + animal.getType() + "] added to the farm, WEIGHT is [" +animal.getWeight()+"]");
-	} 
+		return new SuccessResponse(" ANIMAL [" + animal.getType().toLowerCase() + "] added to the farm, WEIGHT is ["
+				+ animal.getWeight() + "], PRICE: " + animal.getPrice());
+	}
 
-	
 	// #2 endpoint
 	// check video, return a class for animal
-	// - Calculate the average weight of each type of animal (one endpoint is sufficient, 
+	// - Calculate the average weight of each type of animal (one endpoint is
+	// sufficient,
 	// no need to build one per type of animal).
-	//GET http://localhost:8080/average-weight
+	// GET http://localhost:8080/average-weight
 	@GetMapping("average-weight")
 	public Float averageWeight() {
 		if (animals.size() == 0) {
@@ -55,62 +65,62 @@ public class caController {
 		return weight;
 
 	}
-	
-		// #3 endpoint
-		//attempt to return number of animals that have more than the desired weight
-		// GET http://localhost:8080/canbesold
-		//	  array private ArrayList<Animals> animals;
-		@GetMapping("canbesold")
-		public ArrayList<Animals> canBeSold() {
-			
-			ArrayList<Animals> canbesold = new ArrayList<Animals>();
 
-			float weight = 0;
-			
-			for (Animals animal : animals) {
-				if (animal.getWeight().compareTo(299.0) > 0 ) {
-					canbesold.add(animal);
-				
-				}
+	// #3 endpoint
+	// Cow - 300 KG PRICE €500 /// Pig 100 KG PRICE €250.0 /// Chicken - 0.5 KG PRICE €5.0
+	// - How many animals of each type can be sold right now.
+	// GET http://localhost:8080/canbesold
+	// array private ArrayList<Animals> animals;
+	@GetMapping("canbesold")
+	public List<Animals> canBeSold() {
+
+		List<Animals> canbesold = new ArrayList<Animals>();
+
+		// float weight = 0;
+		//Float price = (float) 0;
+		for (Animals animal : animals) {
+			if (animal.getType().toLowerCase().equals("cow") && animal.getWeight().compareTo(299.9f) > 0 )  {
+				animal.setPrice(500.0f);
+				canbesold.add(animal);
 			}
-			if (canbesold.size() == 0 ) {
-				throw new NotFoundException("No items found");
+			if (animal.getType().toLowerCase().equals("pig") && animal.getWeight().compareTo(99.9f) > 0) {
+				animal.setPrice(250.0f);
+				canbesold.add(animal);
 			}
-			return canbesold;
-			
+			if (animal.getType().toLowerCase().equals("chicken") && animal.getWeight().compareTo(4.9f) > 0) {
+				animal.setPrice(5.0f);
+				canbesold.add(animal);
+			}
 		}
-		
-		
-	
-	
-	
-	
-	// #4 endpoint
-	//- What is the current value of the full farm stock: That is, the price of all the animals
-	// that can be sold right now.
-	
+		if (canbesold.size() == 0) {
+			throw new NotFoundException("No animals in the farm");
+		}
+		return canbesold;
 
-	//class example
+	}
+
+	// #4 endpoint
+	// - What is the current value of the full farm stock: That is, the price of all
+	// the animals
+	// that can be sold right now.
+
+	// class example
 	// GET http://localhost:8080/say-hello?name=Endrigo&surname=Frioli
 	@GetMapping("say-hello")
-	public String sayHello(@RequestParam(required = true) String animal, 
-			@RequestParam(required = true) Float weight) {
+	public String sayHello(@RequestParam(required = true) String animal, @RequestParam(required = true) Float weight) {
 		return "Animals to sell: " + animal + " " + weight;
 	}
-	
-	
+
 	// #5 endpoint
-	//	- What is the current value of the farm assuming the price of each animal is set by a
-	//	parameter in the HTTP request. This is an example:
-	//	- http://localhost:8080/currentValue?cow=350&pig=120&chicken=1
-	
-	
-	
-	
-	//ADDITIONAL FUNCTIONS
-	
-	//RETURNING ALL THE ANIMALS
-	//GET http://localhost:8080/all-animals
+	// - What is the current value of the farm assuming the price of each animal is
+	// set by a
+	// parameter in the HTTP request. This is an example:
+	// - http://localhost:8080/currentValue?cow=350&pig=120&chicken=1
+
+	// ADDITIONAL FUNCTIONS
+
+	// RETURNING ALL THE ANIMALS
+	// GET http://localhost:8080/all-animals
 	@GetMapping("all-animals")
 	public ArrayList<Animals> getAllAnimals() {
 		if (animals.size() == 0) {
@@ -118,8 +128,8 @@ public class caController {
 		}
 		return animals;
 	}
-	
-	//GET ALL THE CURRENT WEIGHT
+
+	// GET ALL THE CURRENT WEIGHT
 	@GetMapping("full-weight")
 	public Float fullWeight() {
 		if (animals.size() == 0) {
@@ -133,19 +143,19 @@ public class caController {
 		return weight;
 
 	}
-	
-	//GET THE CURRENT PRICE
+
+	// GET THE CURRENT PRICE
 	@GetMapping("full-price")
 	public Float fullPrice() {
-		if (animals.size() == 0 ) {
+		if (animals.size() == 0) {
 			throw new NotFoundException("No animals in the farm!");
 		}
-		
+
 		Float price = 0.0f;
-		for (Animals animal: animals) {
+		for (Animals animal : animals) {
 			price += animal.getPrice();
 		}
 		return price;
 	}
-	
+
 }
