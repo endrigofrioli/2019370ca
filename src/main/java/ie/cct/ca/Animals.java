@@ -23,9 +23,9 @@ public class Animals {
 	}
 	
 	//defining types of animals in the farm
-	enum type{
-		cow, pig, chicken
-	}
+//	enum type{
+//		cow, pig, chicken
+//	}
 
 	public String getType() {
 		return type;
