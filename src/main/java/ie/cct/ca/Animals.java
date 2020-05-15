@@ -2,6 +2,7 @@ package ie.cct.ca;
 
 public class Animals {
 
+	//declaring animals variables
 	private String type;
 	private Float weight;
 	private Float price;
@@ -14,7 +15,7 @@ public class Animals {
 	
 	
 	//default constructors
-	//new Animal("cow", 32.1);
+	//new Animal("cow", 32.1, price 0.0);
 	public Animals(String type, Float weight, Float price) {
 	
 		this.type = type;

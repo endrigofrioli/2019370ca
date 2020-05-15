@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class NotFoundException extends RuntimeException{
 
 	/**
+	 * Not Found Exception configurations
 	 * 
 	 */
 	private static final long serialVersionUID = -5886261412400146080L;

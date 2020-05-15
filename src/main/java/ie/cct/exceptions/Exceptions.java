@@ -19,7 +19,7 @@ public class Exceptions {
 			
 			e.printStackTrace();
 		}
-		// throwRunTimeException();
+		 throwRunTimeException();
 
 	}
 

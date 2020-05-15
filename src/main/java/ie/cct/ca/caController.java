@@ -14,23 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class caController {
 
+	//array List for animals
 	private ArrayList<Animals> animals;
 
 	public caController() {
 		animals = new ArrayList<Animals>();
 
 		// I added some animals to help you
-		animals.add(new Animals("cow", 300f, 0f));
-		animals.add(new Animals("cow", 70f, 0f));
-		animals.add(new Animals("pig", 100f, 0f));
-		animals.add(new Animals("pig", 30f, 0f));
-		animals.add(new Animals("chicken", 6.0f, 0f));
-		animals.add(new Animals("chicken", 2.0f, 0f));
+//		animals.add(new Animals("cow", 300f, 0f));
+//		animals.add(new Animals("cow", 70f, 0f));
+//		animals.add(new Animals("pig", 100f, 0f));
+//		animals.add(new Animals("pig", 30f, 0f));
+//		animals.add(new Animals("chicken", 6.0f, 0f));
+//		animals.add(new Animals("chicken", 2.0f, 0f));
 
 	}
 
 	// #1 Endpoint
 	// - Add a new animal.
+	//Success Response in case of adding an animal
 	// POST http://localhost:8080/add-animal
 	@PostMapping("add-animal")
 	public SuccessResponse addAnimal(@RequestBody Animals animal) {
@@ -135,13 +137,14 @@ public class caController {
 	// #5 endpoint
 	// - What is the current value of the farm assuming the price of each animal is
 	// set by a parameter in the HTTP request. This is an example:
-	// - http://localhost:8080/currentValue?cow=350&pig=120&chicken=1
+	// - http://localhost:8080/current-value?cow=350&pig=120&chicken=1
 	@GetMapping("current-value")
 	public String currentValue(@RequestParam(required = true) Float cow, @RequestParam(required = true) Float pig,
 			@RequestParam(required = true) Float chicken) {
 		return ("Current Value is: €" + (cow + pig + chicken));
-		//return ("Total: €" + cow+ " P" + pig + "C" + chicken);
+		
 	}
+	
 
 	// ADDITIONAL FUNCTIONS
 
@@ -177,29 +180,8 @@ public class caController {
 		return weight;
 
 	}
-
-	// GET THE CURRENT PRICE
-	@GetMapping("full-price")
-	public Float fullPrice() {
-		if (animals.size() == 0) {
-			throw new NotFoundException("No animals in the farm!");
-		}
-
-		Float price = 0.0f;
-		for (Animals animal : animals) {
-			price += animal.getPrice();
-		}
-		return price;
-	}
-
 	
-	//@GetMapping("no-content")
-	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public class NoContentException extends RuntimeException {
-		public NoContentException(String message) {
-			super(message);
-		}
-	}
+	
 	
 	
 
